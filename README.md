@@ -1,10 +1,47 @@
-# Teach AI To Play Snake! Reinforcement Learning With PyTorch and Pygame
+🐍 FAI Project: Teaching AI to Play Snake! (Reinforcement Learning with PyTorch)
+This project implements a Deep Q-Learning (DQL) agent to learn how to play the classic game Snake, built from scratch using Pygame for the environment and PyTorch for the neural network.
 
-In this Python Reinforcement Learning Tutorial series we teach an AI to play Snake! We build everything from scratch using Pygame and PyTorch. The tutorial consists of 4 parts:
+The code and models within this repository represent the culmination of our work on the Final Artificial Intelligence (FAI) Project.
 
-You can find all tutorials on my channel: [Playlist](https://www.youtube.com/playlist?list=PLqnslRFeH2UrDh7vUmJ60YrmWd64mTTKV)
+🌟 Project Overview
+Our objective was to implement and train a Reinforcement Learning agent to achieve optimal gameplay in Snake. This repository contains:
 
-- Part 1: I'll show you the project and teach you some basics about Reinforcement Learning and Deep Q Learning.
-- Part 2: Learn how to setup the environment and implement the Snake game.
-- Part 3: Implement the agent that controls the game.
-- Part 4: Implement the neural network to predict the moves and train it.
+The Snake Game Environment: Built using Pygame.
+
+The Deep Q-Learning Agent: Logic for move prediction, memory, and training.
+
+Trained Models: Checkpoint files showing the agent's progress.
+
+Video Demonstration: A video showcasing the final trained model's performance.
+
+📚 Getting Started
+Prerequisites
+To run this project, you will need the following Python libraries:
+
+Python 3.x
+
+PyTorch
+
+Pygame
+
+Other dependencies listed in requirements.txt
+
+Installation
+Clone the repository:
+
+Bash
+
+git clone https://github.com/Adil-Khan-N/FAI-project.git
+cd FAI-project
+Install dependencies:
+
+Bash
+
+pip install -r requirements.txt
+Running the Project
+To run the game or train the agent, execute the main Python file (typically agent.py or snake_game.py - adjust the filename as necessary).
+
+🎬 Demonstration
+A video showing the trained AI agent playing the game is included in the root directory:
+
+Model Testing.mp4
