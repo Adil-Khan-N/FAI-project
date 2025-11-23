@@ -5,8 +5,8 @@ from collections import namedtuple
 import numpy as np
 
 pygame.init()
-font = pygame.font.Font('arial.ttf', 25)
-#font = pygame.font.SysFont('arial', 25)
+#font = pygame.font.Font('arial.ttf', 25)
+font = pygame.font.SysFont('arial', 25)
 
 class Direction(Enum):
     RIGHT = 1
@@ -28,13 +28,19 @@ SPEED = 40
 
 class SnakeGameAI:
 
-    def __init__(self, w=640, h=480):
+    def __init__(self, w=640, h=480, render=True, speed=40):
         self.w = w
         self.h = h
-        # init display
-        self.display = pygame.display.set_mode((self.w, self.h))
-        pygame.display.set_caption('Snake')
-        self.clock = pygame.time.Clock()
+        self.render = render
+        self.speed = speed
+        # init display only when rendering
+        if self.render:
+            self.display = pygame.display.set_mode((self.w, self.h))
+            pygame.display.set_caption('Snake')
+            self.clock = pygame.time.Clock()
+        else:
+            self.display = None
+            self.clock = None
         self.reset()
 
 
@@ -69,6 +75,9 @@ class SnakeGameAI:
                 pygame.quit()
                 quit()
         
+        # Store previous distance to food for reward shaping
+        prev_distance = abs(self.head.x - self.food.x) + abs(self.head.y - self.food.y)
+        
         # 2. move
         self._move(action) # update the head
         self.snake.insert(0, self.head)
@@ -78,20 +87,28 @@ class SnakeGameAI:
         game_over = False
         if self.is_collision() or self.frame_iteration > 100*len(self.snake):
             game_over = True
-            reward = -10
+            reward = -10  # Death penalty
             return reward, game_over, self.score
 
-        # 4. place new food or just move
+        # 4. Enhanced reward shaping
         if self.head == self.food:
             self.score += 1
-            reward = 10
+            reward = 10 + self.score * 0.5  # Increasing reward for longer snakes
             self._place_food()
         else:
             self.snake.pop()
+            
+            # Distance-based reward shaping
+            new_distance = abs(self.head.x - self.food.x) + abs(self.head.y - self.food.y)
+            if new_distance < prev_distance:
+                reward = 0.1  # Small reward for getting closer to food
+            else:
+                reward = -0.05  # Small penalty for moving away from food
         
-        # 5. update ui and clock
-        self._update_ui()
-        self.clock.tick(SPEED)
+        # 5. update ui and clock (only when rendering)
+        if self.render:
+            self._update_ui()
+            self.clock.tick(self.speed)
         # 6. return game over and score
         return reward, game_over, self.score
 
@@ -110,6 +127,9 @@ class SnakeGameAI:
 
 
     def _update_ui(self):
+        if not self.render:
+            return
+
         self.display.fill(BLACK)
 
         for pt in self.snake:
